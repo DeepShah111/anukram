@@ -100,7 +100,10 @@ def load_and_chunk_documents():
         separators=["\n\n", "\n", ".", " ", ""],
     )
     manifest = _load_manifest()
-    files = glob.glob(os.path.join(CORPUS_DIR, "*.txt")) + glob.glob(os.path.join(DATA_DIR, "*.pdf"))
+    files = (glob.glob(os.path.join(DATA_DIR, "*.txt")) +
+             glob.glob(os.path.join(DATA_DIR, "*.pdf")) +
+             glob.glob(os.path.join(DATA_DIR, "*.PDF")) +
+             glob.glob(os.path.join(CORPUS_DIR, "*.txt")))
     if not files:
         raise FileNotFoundError(
             "No documents found. Run synthetic_corpus_generator and/or add judgment PDFs to data/raw_docs."
@@ -115,7 +118,7 @@ def load_and_chunk_documents():
         # Parse the judgment ONCE on its full text (court/year/outcome/repeat need the whole document).
         full_text = " ".join(t for _, t in pages)
         file_judgment_meta = {}
-        if file_name.lower().endswith(".pdf") and ("vs" in full_text[:2000].lower() or "versus" in full_text[:2000].lower()):
+        if (file_name.lower().endswith(".pdf") or file_name.lower().endswith(".txt")) and ("vs" in full_text[:2000].lower() or "versus" in full_text[:2000].lower()):
             from src.judgment_parser import parse_judgment
             file_judgment_meta = parse_judgment(full_text)
 
