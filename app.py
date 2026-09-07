@@ -1,5 +1,9 @@
 # Gradio demo UI for ANUKRAM (real-data, with guidance panel): search, CONNECT, bail brief, audit integrity.
 import spaces
+# Minimal GPU function to satisfy ZeroGPU's startup requirement; the app runs on CPU otherwise.
+@spaces.GPU(duration=1)
+def _warmup():
+    return "ok"
 import os
 import json
 import gradio as gr
@@ -75,7 +79,6 @@ HEADER = """
 </div>
 """
 
-@spaces.GPU
 def do_search(question, role):
     # Retrieve, generate a cited answer, apply SHIELD for the role, and log the search.
     if not question.strip():
