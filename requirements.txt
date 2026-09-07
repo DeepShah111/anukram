@@ -1,4 +1,3 @@
-spaces
 torch
 langchain
 langchain-community

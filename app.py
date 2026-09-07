@@ -1,9 +1,4 @@
 # Gradio demo UI for ANUKRAM (real-data, with guidance panel): search, CONNECT, bail brief, audit integrity.
-import spaces
-# Minimal GPU function to satisfy ZeroGPU's startup requirement; the app runs on CPU otherwise.
-@spaces.GPU(duration=1)
-def _warmup():
-    return "ok"
 import os
 import json
 import gradio as gr
