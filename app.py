@@ -19,12 +19,6 @@ from src.audit_ledger import log_event, verify_integrity
 
 import spaces
 
-# ZeroGPU requires at least one GPU-decorated function; this satisfies it at startup.
-@spaces.GPU(duration=60)
-def _gpu_warmup():
-    import torch
-    return torch.zeros(1).sum().item()
-
 # Load the whole engine once at startup, on the real judgments in data/raw_docs.
 print("Starting ANUKRAM on real judgments...")
 CHUNKS = load_and_chunk_documents()
@@ -33,10 +27,6 @@ GRAPH = build_entity_graph(CASE_INDEX, resolve_entities(CASE_INDEX))
 RETRIEVER = HybridRetrievalEngine().build(document_chunks=CHUNKS, rebuild=False)
 print("ANUKRAM ready.")
 
-try:
-    _gpu_warmup()
-except Exception as e:
-    print("warmup skipped:", e)
 
 ENTITY_LIST = "\n".join(
     f"{eid}   →   {', '.join(rec['name_variants'][:1]) or 'unknown'}"
@@ -87,7 +77,7 @@ HEADER = """
      SIH 2026 · Team VARIANTS · PS SIH26190 · MHA / NCRB Women Safety Division · Live on real public judgments</div>
 </div>
 """
-
+@spaces.GPU
 def do_search(question, role):
     # Retrieve, generate a cited answer, apply SHIELD for the role, and log the search.
     if not question.strip():
@@ -204,5 +194,4 @@ with gr.Blocks(title="ANUKRAM", theme=THEME) as demo:
 
 
 if __name__ == "__main__":
-    demo.queue()
-    demo.launch()
+    demo.queue().launch(ssr_mode=False)
