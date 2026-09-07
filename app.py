@@ -1,4 +1,5 @@
 # Gradio demo UI for ANUKRAM (real-data, with guidance panel): search, CONNECT, bail brief, audit integrity.
+import spaces
 import os
 import json
 import gradio as gr
@@ -16,6 +17,14 @@ from src.generation_agent import generate_answer
 from src.shield_redaction import mask_text
 from src.audit_ledger import log_event, verify_integrity
 
+import spaces
+
+# ZeroGPU requires at least one GPU-decorated function; this satisfies it at startup.
+@spaces.GPU(duration=60)
+def _gpu_warmup():
+    import torch
+    return torch.zeros(1).sum().item()
+
 # Load the whole engine once at startup, on the real judgments in data/raw_docs.
 print("Starting ANUKRAM on real judgments...")
 CHUNKS = load_and_chunk_documents()
@@ -23,6 +32,11 @@ CASE_INDEX = build_case_entity_index(CHUNKS)
 GRAPH = build_entity_graph(CASE_INDEX, resolve_entities(CASE_INDEX))
 RETRIEVER = HybridRetrievalEngine().build(document_chunks=CHUNKS, rebuild=False)
 print("ANUKRAM ready.")
+
+try:
+    _gpu_warmup()
+except Exception as e:
+    print("warmup skipped:", e)
 
 ENTITY_LIST = "\n".join(
     f"{eid}   →   {', '.join(rec['name_variants'][:1]) or 'unknown'}"
