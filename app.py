@@ -190,4 +190,5 @@ with gr.Blocks(title="ANUKRAM", theme=THEME) as demo:
 
 
 if __name__ == "__main__":
-    demo.launch(ssr_mode=False)
+    demo.queue()
+    demo.launch()
