@@ -26,7 +26,7 @@ MAX_CHUNKS_PER_CASE = 3          # balance cap so one long chargesheet can't dom
 # Models (current on Groq, Sept 2026; old llama-3.3-70b and qwen3-32b were deprecated)
 GENERATOR_MODEL = "openai/gpt-oss-120b"
 EVALUATOR_MODEL = "qwen/qwen3.6-27b"     # different family from generator (cross-family judge)
-EMBEDDING_MODEL_NAME = "BAAI/bge-m3"     # multilingual: English + Hindi + code-mixed
+EMBEDDING_MODEL_NAME = "BAAI/bge-small-en-v1.5"   # lightweight, fits free-tier RAM
 
 EMBEDDING_DEVICE = "cpu"
 

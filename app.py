@@ -1,5 +1,4 @@
 # Gradio demo UI for ANUKRAM (real-data, with guidance panel): search, CONNECT, bail brief, audit integrity.
-import spaces
 import os
 import json
 import gradio as gr
@@ -77,7 +76,7 @@ HEADER = """
      SIH 2026 · Team VARIANTS · PS SIH26190 · MHA / NCRB Women Safety Division · Live on real public judgments</div>
 </div>
 """
-@spaces.GPU
+
 def do_search(question, role):
     # Retrieve, generate a cited answer, apply SHIELD for the role, and log the search.
     if not question.strip():
@@ -194,4 +193,6 @@ with gr.Blocks(title="ANUKRAM", theme=THEME) as demo:
 
 
 if __name__ == "__main__":
-    demo.queue().launch(ssr_mode=False)
+    import os
+    port = int(os.environ.get("PORT", 7860))
+    demo.queue().launch(server_name="0.0.0.0", server_port=port)
