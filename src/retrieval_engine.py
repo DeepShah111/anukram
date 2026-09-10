@@ -72,12 +72,9 @@ class HybridRetrievalEngine:
     def __init__(self):
         self.bm25_path = os.path.join(VECTOR_DB_DIR, "bm25_index.pkl")
         self.bm25_hash_path = os.path.join(VECTOR_DB_DIR, "bm25_index.sha256")
-        logger.info("Loading embedding model %s on %s", EMBEDDING_MODEL_NAME, EMBEDDING_DEVICE)
-        self.embedding_model = HuggingFaceEmbeddings(
-            model_name=EMBEDDING_MODEL_NAME,
-            model_kwargs={"device": EMBEDDING_DEVICE},
-            encode_kwargs={"normalize_embeddings": True},
-        )
+        logger.info("Using Jina API embeddings (no local model).")
+        self.embedding_model = JinaEmbeddings()
+        
         self.retriever = None
 
     @staticmethod
