@@ -7,7 +7,7 @@ import tempfile
 import shutil
 
 from langchain_chroma import Chroma
-from langchain_huggingface import HuggingFaceEmbeddings
+from src.jina_embeddings import JinaEmbeddings
 from langchain_community.retrievers import BM25Retriever
 from langchain_core.documents import Document
 

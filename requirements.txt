@@ -1,4 +1,4 @@
-torch
+requests
 langchain
 langchain-community
 langchain-text-splitters
@@ -6,7 +6,6 @@ langchain-chroma
 langchain-huggingface
 langchain-groq
 chromadb
-sentence-transformers
 rank_bm25
 pypdf
 pytesseract

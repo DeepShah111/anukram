@@ -16,8 +16,6 @@ from src.generation_agent import generate_answer
 from src.shield_redaction import mask_text
 from src.audit_ledger import log_event, verify_integrity
 
-import spaces
-
 # Load the whole engine once at startup, on the real judgments in data/raw_docs.
 print("Starting ANUKRAM on real judgments...")
 CHUNKS = load_and_chunk_documents()
